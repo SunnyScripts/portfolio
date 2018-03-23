@@ -1,0 +1,93 @@
+@font-face
+{
+    font-family: 'Avenir Next';
+    src: url("../fonts/AvenirNext-UltraLightItalic.ttf") format('truetype');
+}
+.gradient
+{
+    background: linear-gradient(140deg, cyan, violet); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    font-family: 'Avenir Next'; font-style: italic; font-weight: lighter; text-align: center;
+}
+#text:after
+{
+    background: none;
+    content: attr(data-text);
+    text-shadow: -3px 3px 5px #000;
+    z-index: -1;
+    position: absolute;
+    left: 0;
+    /*width: 100%;*/
+    /*text-align: center;*/
+}
+
+.tab-group
+{
+    overflow: hidden;
+    width: 100vw;
+    height: 10vh;
+    background-color: white;
+}
+.tab-group button
+{
+    height:10vh;
+    float: right;
+    background-color: inherit;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 0 20px;
+    color: #666;
+    font-size: 1em;
+}
+
+.tab-group button:hover
+ {
+     color: #999;
+ }
+
+.tab-group button.active
+{
+    color: black;
+    /*font-weight: bold;*/
+}
+
+/* Style the tab content */
+.tab-content
+{
+    /*display: none;*/
+    /*padding: 6px 12px;*/
+    /*border-top: none;*/
+    overflow: hidden;
+    /*animation: fadeIn 2s;*/
+
+}
+
+/*@keyframes fadeIn*/
+/*{*/
+    /*from { opacity: 0; }*/
+    /*to { opacity: 1; }*/
+/*}*/
+
+/*@keyframes slide-slow {*/
+    /*!*0% {transform: translate(0px, 0px);}*!*/
+    /*50% {transform: translate(80px, 0px);}*/
+    /*!*75% {transform: translate(20px, 0px);}*!*/
+/*}*/
+
+/*@keyframes shadow {*/
+    /*!*0% {transform: translate(0px, 0px);}*!*/
+    /*50% {text-shadow: -2px 3px 5px #000;}*/
+    /*!*75% {transform: translate(20px, 0px);}*!*/
+/*}*/
+/*#text*/
+/*{*/
+    /*animation-name: slide-fast;*/
+    /*animation-duration: 10s;*/
+    /*animation-iteration-count: infinite;*/
+    /*animation-timing-function: ease-in-out;*/
+/*}*/
+/*@keyframes slide-fast {*/
+    /*!*0% {transform: translate(0px, 0px);}*!*/
+    /*50% {transform: translate(20px, 0px);}*/
+    /*!*75% {transform: translate(-80px, 0px);}*!*/
+/*}*/

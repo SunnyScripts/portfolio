@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat Parts</title>
+
+    <link href="css/partsearch.css" rel="stylesheet">
+
+    <!--<script src="javascript/jquery_3.1.1_.min.js"></script>-->
+    <script defer type="text/javascript" src="js/partsearchmain.js"></script>
+    <link rel="stylesheet" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+
+</head>
+<body style="margin: 0; padding: 0; width: 100%; height: 100%; background-color: white; overflow: hidden">
+<div style="z-index: 2000;position: fixed; height: 58px; top: 0; width: 100vw; background-color: #545657;">
+    <img style="width: 62px; float:left; padding: 0 8px" src="images/cat_logo.svg">
+    <div id="sort-container" style=" text-align: center; width: 44vw; height: 100%; background-color: #ffce2b; float:left;">
+        <div class="dropdown" style="float: right; width: 30%; background-color: #545657; height: 100%; border-left: solid white 1px;">
+            <div id="sort-by" class="dropdown-content" style="flex-direction: column;flex-wrap: wrap;">
+                <span data-sort-type="part_number" data-sort-value="asc">Part Number&nbsp;<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></span>
+                <span data-sort-type="part_number" data-sort-value="desc">Part Number&nbsp;<i class="fa fa-sort-numeric-desc" aria-hidden="true"></i></span>
+                <span data-sort-type="name" data-sort-value="asc">Name&nbsp;<i class="fa fa-sort-alpha-asc" aria-hidden="true"></i></span>
+                <span data-sort-type="name" data-sort-value="desc">Name&nbsp;<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i></span>
+                <span data-sort-type="price" data-sort-value="asc">Price $-$$</span>
+                <span data-sort-type="price" data-sort-value="desc">Price $$-$</span>
+                <span data-sort-type="weight" data-sort-value="asc">Weight&nbsp;<i class="fa fa-sort-amount-asc" aria-hidden="true"></i></span>
+                <span data-sort-type="weight" data-sort-value="desc">Weight&nbsp;<i class="fa fa-sort-amount-desc" aria-hidden="true"></i></span>
+            </div>
+            <div style="margin-top: 1.5vw; color: white">Sort By:&nbsp;<span id="sort-by-title">Price $-$$</span></div>
+        </div>
+        <div id="filter-tab" class="dropdown width-transition" style="overflow: hidden; float: right; width: 0; background-color: #545657; height: 100%;">
+            <div id="filter-tab-drop-down" class="dropdown-content">
+                <div>
+                    <div>
+                        <div>Primary vs Secondary</div>
+                        <span id="Primary" data-type="Primary vs Secondary">Primary</span>
+                        <span id="Secondary" data-type="Primary vs Secondary">Secondary</span>
+                    </div>
+                    <div>
+                        <div>Efficiency Rating</div>
+                        <span id="Ultra" data-type="Efficiency Rating">Ultra</span>
+                        <span id="Standard" data-type="Efficiency Rating">Standard</span>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 1.5vw; color: white; white-space: nowrap">Filter By: <span id="sort-filter-title"></span></div>
+        </div>
+        <div class="dropdown" style="color: white; border-right: white 1px solid; overflow: hidden; width: auto; min-width: 26%; background-color: #545657; height: 100%; cursor: pointer; border-left: 1px solid white">
+            <div id="category" class="dropdown-content">
+                <span>All</span>
+                <span>Attachments</span>
+                <span>Batteries</span>
+                <span>Belts</span>
+                <span>Cylinder Seals</span>
+                <span>Drive Train</span>
+                <span>Engine Parts</span>
+                <span>Filters</span>
+                <span>Fluids</span>
+                <span>Ground Engaging Tools</span>
+                <span>Hand Tools</span>
+                <span>Hardware And Fasteners</span>
+                <span>Hydraulics</span>
+                <span>Hose</span>
+                <span>Pump Motors</span>
+                <span>Lights And Accessories</span>
+                <span>Radios</span>
+                <span>O Ring Products</span>
+                <span>Seats</span>
+                <span>Sensors</span>
+                <span>Shop Supplies</span>
+                <span>Tires</span>
+                <span>Undercarriage</span>
+                <span>Work Area Vision System</span>
+            </div>
+            <div style="margin-top: 1.5vw">Category:&nbsp;<span id="category-title">All</span></div>
+        </div>
+    </div>
+    <div id="search-icon" style="height: 4vw; width: 4vw; float: left; background-color: #eee">
+        <svg style="width: 2vw; position: absolute;top: 50%; left: 50%; transform: translate(50%, -50%); fill: #545657;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg>
+    </div>
+    <input id="search-box" style="background-color: #eee; width: 41vw; height: 100%; float: left; border: none; margin: 0; font-size: 2em; padding: 0;font-family: 'Alegreya Sans SC', sans-serif; outline: none" placeholder="find parts...">
+    <div id="cart" onclick="openShoppingCart()" style="width: 5.5vw; float: left; background-color: #545657; height: 100%; position: relative; display: block"><i style="color: white; position: absolute;top: 1.5vw; left: 2vw" class="fa fa-shopping-cart fa-lg"></i></div>
+    <!--<div id="navbar-extras-toggle" onclick="toggleMobileNavDropdown()" style="width: 78px; float: right; height: 100%; position: relative"><i style="color: white; position: absolute;top: 20px; left: 30px" class="fa fa-bars fa-lg"></i></div>-->
+    <!--<div id="mobile-nav-dropdown" class="height-transition" style="position: absolute; top: 58px; height: 0; width: 100vw; background-color: #ab987a; overflow-y: auto">-->
+        <!--<div id="search-icon" style="height: 58px; width: 38px; float: left; position: relative; background-color: #eee">-->
+            <!--<svg style="width: 28px; position: absolute;top: 55%; left: 50%; transform: translate(-50%, -55%); fill: #545657;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg>-->
+        <!--</div>-->
+        <!--<input id="search-box" style="background-color: #eee; width: calc(100vw - 38px); height: 58px; float: left; border: none; margin: 0 0 10px 0; font-size: 2em; padding: 0;font-family: 'Alegreya Sans SC', sans-serif; outline: none" placeholder="find parts...">-->
+        <!--<div style="text-align: center; font-size: 2em; color: white; cursor: pointer; border-bottom: 2px solid #545657; margin: 0 auto 6px auto; width: 90%; padding: 0 0 4px 0;">Category: All</div>-->
+        <!--<div class="mobile-nav-dropdown" style="display: none">-->
+            <!--<span>All</span>-->
+            <!--<span>Attachments</span>-->
+            <!--<span>Batteries</span>-->
+            <!--<span>Belts</span>-->
+            <!--<span>Cylinder Seals</span>-->
+            <!--<span>Drive Train</span>-->
+            <!--<span>Engine Parts</span>-->
+            <!--<span>Filters</span>-->
+            <!--<span>Fluids</span>-->
+            <!--<span>Ground Engaging Tools</span>-->
+            <!--<span>Hand Tools</span>-->
+            <!--<span>Hardware And Fasteners</span>-->
+            <!--<span>Hydraulics</span>-->
+            <!--<span>Hose</span>-->
+            <!--<span>Pump Motors</span>-->
+            <!--<span>Lights And Accessories</span>-->
+            <!--<span>Radios</span>-->
+            <!--<span>O Ring Products</span>-->
+            <!--<span>Seats</span>-->
+            <!--<span>Sensors</span>-->
+            <!--<span>Shop Supplies</span>-->
+            <!--<span>Tires</span>-->
+            <!--<span>Undercarriage</span>-->
+            <!--<span>Work Area Vision System</span>-->
+        <!--</div>-->
+        <!--<div style="text-align: center; font-size: 2em; color: white; cursor: pointer; margin: 0 auto 6px auto; border-bottom: 2px solid #545657; padding: 0 0 4px 0; width: 90%;">Sort By</div>-->
+        <!--<div class="mobile-nav-dropdown" style="display: none">-->
+            <!--<span data-sort-type="part_number" data-sort-value="asc">Part Number&nbsp;<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></span>-->
+            <!--<span data-sort-type="part_number" data-sort-value="desc">Part Number&nbsp;<i class="fa fa-sort-numeric-desc" aria-hidden="true"></i></span>-->
+            <!--<span data-sort-type="name" data-sort-value="asc">Name&nbsp;<i class="fa fa-sort-alpha-asc" aria-hidden="true"></i></span>-->
+            <!--<span data-sort-type="name" data-sort-value="desc">Name&nbsp;<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i></span>-->
+            <!--<span data-sort-type="price" data-sort-value="asc">Price $-$$</span>-->
+            <!--<span data-sort-type="price" data-sort-value="desc">Price $$-$</span>-->
+            <!--<span data-sort-type="weight" data-sort-value="asc">Weight&nbsp;<i class="fa fa-sort-amount-asc" aria-hidden="true"></i></span>-->
+            <!--<span data-sort-type="weight" data-sort-value="desc">Weight&nbsp;<i class="fa fa-sort-amount-desc" aria-hidden="true"></i></span>-->
+        <!--</div>-->
+    <!--</div>-->
+</div>
+
+<div id="subcategory-pusher" class="height-transition" style="width: 100%; height: 0"></div>
+
+<div style="width: 88.9vw; height: 3.7vw; margin: 0 auto; border: .2vw solid #42413D; border-radius: .66vw;">
+    <ul id="subcategory-container" style="text-align: center; cursor: pointer; display: table; width:90%; margin: 0 auto; padding-top: 1.3vw">
+        <li style="display:table-cell;"><span class="subcategory-button">Radios</span></li>
+        <li style="display:table-cell;"><span class="subcategory-button">Radio Accessories</span></li>
+    </ul>
+</div>
+<div id="search-results-container" class="height-transition" style=" height: calc(100vh - 4.5vw); overflow-x: visible; overflow-y: auto; width: 100vw; margin: auto; padding: 1vw 7vw;">
+    <!--<div onmouseenter="addToCartTab(this, 11)" onmouseleave="addToCartTab(this, 0)" data-cart-item-index="0" style="display:inline-block; margin: .5vw;  padding: 0 0; width: 20.5vw; height: 26.15vw; position: relative; background-color: #eee">-->
+        <!--<div style="text-align: center; padding: .5vw 1vw 0 1vw; font-size: 1.1vw; height: 3vw; line-height: 2.8vw"><span style="display: inline-block; vertical-align: middle; line-height: normal">Amber - 1R-1317</span></div>-->
+        <!--<div style="z-index:2; height: 17vw; margin: 0 .25vw; background-color: white; position: relative">-->
+            <!--<img style="max-height: 100%; position: absolute; top: 0; left: 0; bottom: 0; right: 0; margin: auto;" src="https://caterpillar.scene7.com/is/image/Caterpillar/C10833190909090" onerror="if(this.src != 'http://ncparts.s3.amazonaws.com/cat_parts_generic.jpeg'){this.src='http://ncparts.s3.amazonaws.com/cat_parts_generic.jpeg'}">-->
+            <!--<div style="position: absolute; top: 0; right: 0; padding: .5vw; background-color: #42413D; color: white">$19.95</div>-->
+            <!--<svg id="check0" class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/></svg>-->
+            <!--<div id="load0" class="spinner">-->
+                <!--<div class="double-bounce1"></div>-->
+                <!--<div class="double-bounce2"></div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div style="padding:0 1vw; margin: .5vw 0; height: 3vw; text-align: center; font-size: 1.1vw; line-height: 2.8vw;"><span style="display: inline-block; vertical-align: middle; line-height: normal">Rubber Track Rubber Track Track Rubber Track Rubber Track </span></div>-->
+        <!--<ul style="text-align: center; background-color: #42413D; color: white; cursor: pointer; display: table; width:100%; position: absolute; top: 24vw">-->
+            <!--<li data-details-tab-open="no" data-cart-item-index="0" class="details-button" style="display:table-cell; border-right: solid white 1px; font-size: 1vw">Description</li>-->
+            <!--<li data-details-tab-open="no" data-cart-item-index="0" class="details-button" style="display:table-cell; font-size: 1vw" >Spec</li>-->
+            <!--<li data-details-tab-open="no" data-cart-item-index="0" class="details-button" style="display:table-cell; border-left: solid white 1px; font-size: 1vw">Compatibility</li>-->
+        <!--</ul>-->
+        <!--&lt;!&ndash;total width 20.5vw -2vw for each tab from padding&ndash;&gt;-->
+        <!--<div id="add-to-cart0" class="translate-transition" style="z-index: 1; overflow: hidden; color: white; position: absolute; left: 8vw; top: 6vw; display: inline-block;  width: 11vw; background-color: #444444">-->
+            <!--<div style="padding: 0 1vw; text-align: left">-->
+                <!--<div style="margin: .5vw 0"><span>45 in stock</span></div>-->
+                <!--<div style="margin: .5vw 0"><input id="quantity-stepper0" type="number" style="width: 100%; font-family: inherit; font-size: .85em" placeholder="Purchase Qty"></div>-->
+                <!--<button data-cart-item-index="0" class="btn" style="margin-bottom: 1vw">Add to Cart</button>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div id="item-details0" class="height-transition" style="z-index: 10; padding: 0 1vw; margin:0;overflow: hidden; height: 0; color: white; position: absolute; top: 100%; left: 0; right: 0; width: 18.5vw; overflow-y: auto; max-height: 12vw; background-color: #555">-->
+            <!--<div id="Description0" style=" white-space: normal; display: none">sladkfj;l sdlkfj ;l sdf;lk l;sdkfj ;lsdf. sla dkfj;l sdlkfj ;l sdf;lk l;sdkfj ;lsdf. sladkfj;l sdlkfj ;l sdf;lk l;sdkfj ;lsdf. sladkfj;l sdlkfj ;l sdf;lk l;sdkfj ;lsdf. sladkfj;l sdlkfj ;l sdf;lk l;sdkfj ;lsdf.dkfj;l sdlkfj ;l sdf;lk l;sdkfj ;lsdf.dkfj;l sdlkfj ;l sdf;lk l;sdkfj ;lsdf.dkfj;l sdlkfj ;l sdf;lk l;sdkfj ;lsdf.dkfj;l sdlkfj ;l sdf;lk l;sdkfj ;lsdf.dkfj;l sdlkfj ;l sdf;lk l;sdkfj ;lsdf.dkfj;l sdlkfj ;l sdf;lk l;sdkfj ;lsdf.dkfj;l sdlkfj ;l sdf;lk l;sdkfj ;lsdf.dkfj;l sdlkfj ;l sdf;lk l;sdkfj ;lsdf.dkfj;l sdlkfj ;l sdf;lk l;sdkfj ;lsdf.dkfj;l sdlkfj ;l sdf;lk l;sdkfj ;lsdf.dkfj;l sdlkfj ;l sdf;lk l;sdkfj ;lsdf.dkfj;l sdlkfj ;l sdf;lk l;sdkfj ;lsdf.dkfj;l sdlkfj ;l sdf;lk l;sdkfj ;lsdf.dkfj;l sdlkfj ;l sdf;lk l;sdkfj ;lsdf.dkfj;l sdlkfj ;l sdf;lk l;sdkfj ;lsdf.</div>-->
+            <!--<div id="Spec0" style=" white-space: normal; display: none">spec spec spec spec spec spec spec spec spec spec spec spec spec spec spec spec spec spec spec spec spec spec</div>-->
+            <!--<div id="Compatibility0" style=" white-space: normal; display: none">Compatibility Compatibility Compatibility Compatibility Compatibility Compatibility Compatibility Compatibility Compatibility</div>-->
+        <!--</div>-->
+    <!--</div>-->
+</div>
+<div id="shopping-cart" style="display: none; height: calc(100vh - 4vw); overflow-y: auto;">
+    <h1 style="border-bottom: solid black 2px; margin: 0 auto; padding-top: 1vw;  width: 96%">Items in Your Cart</h1>
+    <div style="width: 96%; height: 92%; margin: auto;">
+        <div id="clear-cart" style="float: right; color: blue; font-size: 1.2vw; padding: .5vw 0; cursor: pointer">Clear Cart</div>
+        <div id="header-container" style="clear: both; margin-top: 1vw">
+            <!--<div id="test-cart-item" style="float: left; box-sizing: border-box; width: 100%; border: 2px solid gray; padding: 6px; margin-bottom: 8px">-->
+            <!--<img style="float:left; max-height: 150px;" src="images/frozen-seamless.jpg">-->
+            <!--<div style="overflow: auto; padding-top: .75vw ">-->
+                <!--<span style="float:left; margin-left: 1vw"><b style="font-size: 1.2vw">Undercarriage</b><br>this is a short description of the part displayed.</span>-->
+                <!--<span style="float: right">Qty.<input class="stepper" min="1" max="40" value="3" type="number" data-price-id="test-cart-item" data-cart-index="test-cart-item" data-price="19.95"/>&nbsp;&nbsp;<b id="price'+i+'">$19.95</b></span>-->
+                <!--<div style="float: right; clear: right; margin-top: 4px">-->
+                    <!--<span>2303426</span>-->
+                    <!--<span onclick="removeCartItem('test-cart-item')" style="color: blue; margin-left: 8px; cursor: pointer">Remove</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        </div>
+        <div style="clear: both; float: right">
+            <div style="float:right; text-align: right">
+                <p id="cart-total-price">$321.01</p>
+                <p>$12.01</p>
+                <p id="cart-tax">$55.04</p>
+                <p style="clear: both; width: 100%; border-bottom: double 3px black"></p>
+                <p id="sum-total">$388.06</p>
+            </div>
+            <div style="float:right; text-align: right">
+                <p>Cart Subtotal</p>
+                <p>Shipping</p>
+                <p>Tax</p>
+                <p style="clear: both; width: 100%; border-bottom: double 3px black"></p>
+                <p><b>Total</b></p>
+            </div>
+        </div>
+        <button style="clear: both; float: right; width: 110px; padding: 10px 16px; background-color:#000; color: white;outline: none">checkout</button>
+    </div>
+</div>
+
+</body>
+</html>

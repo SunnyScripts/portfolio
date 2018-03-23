@@ -1,0 +1,20 @@
+version: '3'
+services:
+  database:
+    image: postgres:10.3
+    environment:
+      POSTGRES_USER: 'nginx'
+      POSTGRES_PASSWORD: 'bluefin'
+      POSTGRES_DB: 'portfolio'
+    volumes:
+    - ./database:/docker-entrypoint-initdb.d/
+  apiserver:
+    ports:
+      - '80:80'
+    depends_on:
+      - database
+    build:
+      context: ./
+      dockerfile: Dockerfile
+
+#docker-compose up -d

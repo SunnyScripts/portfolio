@@ -1,0 +1,95 @@
+<html>
+<head  lang="en">
+    <meta charset="UTF-8">
+    <title>Ryan Berg</title>
+    <link rel="icon" href="images/favicon.png">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<script type="application/javascript">
+
+
+    function tabSwitch(event, tabName)
+    {
+        var tabContent, tabs;
+
+        tabContent = document.getElementsByClassName("tab-content");
+        for (let i = 0; i < tabContent.length; i++)
+        {
+            tabContent[i].style.display = "none";
+        }
+
+        tabs = document.getElementsByClassName("tab");
+        for (let i = 0; i < tabs.length; i++)
+        {
+            tabs[i].className = tabs[i].className.replace(" active", "");
+        }
+
+        document.getElementById(tabName).style.display = "block";
+        event.currentTarget.className += " active";
+        if(event.currentTarget.id === "starting-tab")
+        {
+            document.getElementById("Main-Content-Container").style.top = "100vh";
+            document.body.style.overflow = "hidden";
+        }
+        else
+        {
+            document.getElementById("Main-Content-Container").style.top = "40vh";
+            document.body.style.overflow = "visible";
+        }
+    }
+</script>
+<body style="margin:0; background-color: white; color: #E3DFDC; overflow: hidden">
+
+<div class="tab-group">
+    <span id="starting-tab" class="tab" onclick="tabSwitch(event, 'Home')"><span class="gradient" style="cursor: pointer; font-size: 4em; margin-left: .1em; padding:0">RB</span></span>
+    <a href="wifi_search.html"><button>WiFi</button></a>
+    <a href="partsearch.html"><button>CAT</button></a>
+    <button class="tab" onclick="tabSwitch(event, 'Graphics-Programming')">Graphics Programming</button>
+    <button class="tab" onclick="tabSwitch(event, 'Data-Scraping')">Data Scraping</button>
+    <button class="tab" onclick="tabSwitch(event, 'Restful-API')">Back-End</button>
+    <button class="tab" onclick="tabSwitch(event, 'Front-End')">Front-End</button>
+</div>
+
+<div id="Home" style="width: 100vw; height: 90vh; overflow: hidden; position: relative;">
+    <img src="images/snowLand.jpeg" id="back" width="100%" height="auto" style="z-index: -3; position: absolute">
+    <div id="fireBox" style="position: absolute; width: 100%; height: 100%; top:0; z-index: -2"></div>
+    <span id="text" class="gradient" data-text="Ryan Berg" style=" position: absolute; font-size: 8em; top: calc(50% - .6em); left: 30vw;">Ryan Berg</span>
+</div>
+
+<div id="Main-Content-Container" style="position: absolute; display: initial; top: 100vh; width: 100vw; min-height: 60vh; transition: 1000ms; background-color: snow">
+<div style="background-color: #5B7C89; height: 90vh" id="Data-Scraping" class="tab-content">
+    <h3>Data Scraping</h3>
+    <div style="width: 50%; float: left">Access data from anywhere.</div>
+    <div style="width: 50%; float: left"><img src="images/logos_place_holder.png"></div>
+
+    <div style="width: 50%; float: left">In a form you can easily use and manipulate.</div>
+    <div style="width: 50%; float: left"><img src="images/json.png"></div>
+</div>
+
+<div style="background-color: #44505E" id="Restful-API" class="tab-content">
+    <h3>Content</h3>
+    <p>Retrieve clean data at the speed of light.</p>
+</div>
+
+<div style="background-color: #AFB1B5" id="Front-End" class="tab-content">
+    <div style="width: 600px; margin: 25px; float: left"><span>Find free Wifi near you or plan for your next trip. Rate places you've been and share with your friends.</span></div>
+    <iframe width="600px" height="600px" frameborder="0" src="wifi_search.html" style="margin: 25px; float: left"></iframe>
+</div>
+
+<div style="background-color: #77808D" id="Graphics-Programming" class="tab-content">
+    <h3>Content</h3>
+    <p>Animation shaders and much more!</p>
+</div>
+</div>
+
+</body>
+<script type="application/javascript">
+    // document.getElementById("starting-tab").click();
+</script>
+<script src="js/three.min.js"></script>
+<script src="js/Detector.js"></script>
+<!--<script type="application/javascript">-->
+    <!--(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//rawgit.com/mrdoob/stats.js/master/build/stats.min.js';document.head.appendChild(script);})()-->
+<!--</script>-->
+<script src="js/rocketThrust.js"></script>
+</html>
