@@ -32,7 +32,7 @@ void main()
 
 
     // displacement = initialVelocity * Time + .5 * acceleration * Time * Time
-    float displacement = (speed.x * max((size * 0.15), 1.) * tmpTime) + (.5 * speed.y * tmpTime * tmpTime);
+    float displacement = (speed.x * max((size * 0.165), 1.) * tmpTime) + (.5 * speed.y * tmpTime * tmpTime);
 
 
     vec3 velocity = vec3(displacement * cos(deltaAnglePercent), displacement * sin(deltaAnglePercent), 0.);

@@ -12,6 +12,49 @@
     background: linear-gradient(140deg, cyan, violet); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     font-family: 'Avenir Next'; font-style: italic; font-weight: lighter; text-align: center;
 }
+#starting-tab:hover
+{
+    background: linear-gradient(140deg, violet, cyan); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.header-container
+{
+    width: 100vw;
+    text-align: center;
+}
+.category-header
+{
+    margin-top: 20px;
+    font-size: 50px;
+    line-height: 1;
+    font-weight: normal;
+    letter-spacing: -1px;
+}
+.category-header span
+{
+    color: #777;
+}
+.category-container
+{
+    width: 50vw;
+    height: 500px;
+    float: left;
+    margin: 25px 0;
+    min-width: 500px;
+}
+.no-text
+{
+    display: flex;
+    justify-content: center;
+}
+.category-container p
+{
+    font-size: 21px;
+    font-weight: 300;
+    line-height: 1.4;
+    color: #222;
+    margin: 0 0 0 20px;
+}
+
 #text:after
 {
     background: none;

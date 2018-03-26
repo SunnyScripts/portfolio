@@ -1,6 +1,7 @@
 <html>
 <head  lang="en">
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" lang="en">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ryan Berg</title>
     <link rel="icon" href="images/favicon.png">
     <link rel="stylesheet" type="text/css" href="css/main.css">
@@ -24,6 +25,8 @@
             tabs[i].className = tabs[i].className.replace(" active", "");
         }
 
+        document.getElementById("Main-Content-Container").scrollTo(0, 0);
+
         document.getElementById(tabName).style.display = "block";
         event.currentTarget.className += " active";
         if(event.currentTarget.id === "starting-tab")
@@ -39,11 +42,11 @@
 <body style="margin:0; background-color: white; overflow: hidden; font-family: 'Montserrat', sans-serif">
 
 <div class="tab-group">
-    <span id="starting-tab" class="tab" onclick="tabSwitch(event, 'Home')"><span class="gradient" style="cursor: pointer; font-size: 4em; margin-left: .1em; padding:0">RB</span></span>
     <button class="tab" onclick="tabSwitch(event, 'Graphics-Programming')">Graphics Programming</button>
     <button class="tab" onclick="tabSwitch(event, 'Data-Scraping')">Data Scraping</button>
     <button class="tab" onclick="tabSwitch(event, 'Back-End')">Back-End</button>
     <button class="tab" onclick="tabSwitch(event, 'Front-End')">Front-End</button>
+    <button id="starting-tab" class="tab gradient" style="float: left;" onclick="tabSwitch(event, 'Home')"><span style="font-size: 50px; -webkit-transition: 2s">RB</span></button>
 </div>
 
 <div id="Home" style="width: 100vw; height: 90vh; position: absolute; top: 10vh;">
@@ -54,13 +57,15 @@
 
 
 
-<div id="Main-Content-Container" style="position: relative; top: 100vh; width: 100vw; height: 70vh; background-color: white; transition: 1s; overflow-y: scroll; box-shadow: 0 -0 18px #000;">
+<div id="Main-Content-Container" style="position: relative; top: 100vh; width: 100vw; height: 70vh; background-color: white; transition: top 1s; overflow-y: scroll; box-shadow: 0 -0 18px #000;">
 
     <div id="Front-End" class="tab-content">
-        <div style="width: 100vw; text-align: center"><h1 style="margin-top: 20px; font-size: 50px;line-height: 1; font-weight: normal; letter-spacing: -1px;">Clean and modular.<br><span style="color: #777">Faster and more efficient.</span></h1></div>
+        <div class="header-container"><h1 class="category-header">Clean and modular.<br><span style="color: #777">Faster and more efficient.</span></h1></div>
 
-        <p style="font-size: 21px;width: 600px; float: left">Find free Wifi near you or plan for your next trip. Rate places you've been and share with your friends.</p>
-        <a style="float: left;" target="_blank" href="https://itunes.apple.com/us/app/this-wifi-sucks/id925050107?mt=8">
+        <div class="category-container">
+            <p>Find free Wifi near you or plan for your next trip. Rate places you've been and share with your friends.</p>
+        </div>
+        <a class="category-container no-text" target="_blank" href="https://itunes.apple.com/us/app/this-wifi-sucks/id925050107?mt=8">
             <div style="position: relative; background: url('images/TWSAdvert.png') no-repeat center; background-size: auto 500px; height: 500px; width: 500px">
                 <video autoplay loop style=" position: absolute; top: 59px; left:143px; height: 382px">
                     <source src="images/TWSAdvert.webm" type="video/webm">
@@ -69,39 +74,70 @@
             </div>
         </a>
 
-        <iframe frameborder="1" src="/wifi" style="  height: 500px; width: 500px; float: left"></iframe>
-        <p style="font-size: 21px;width: 600px; height: 500px; float: left">Find free Wifi near you or plan for your next trip. Rate places you've been and share with your friends.</p>
+        <div class="category-container no-text">
+            <iframe frameborder="1" src="/wifi" style="  height: 500px; width: 500px;"></iframe>
+        </div>
+        <div class="category-container">
+            <p>share with your friends.</p>
+        </div>
 
-        <p style="font-size: 21px;width: 600px; height: 500px; float: left;">Find free Wifi near you or plan for your next trip. Rate places you've been and share with your friends.</p>
-        <iframe frameborder="1" src="/cat" style="float: left; height: 500px; width: 500px; "></iframe>
+        <div class="category-container">
+            <p>Find free Wifi near you or plan for your next trip. Rate places you've been and share with your friends.</p>
+        </div>
+        <div class="category-container no-text">
+            <iframe frameborder="1" src="/cat" style="height: 500px; width: 500px; "></iframe>
+        </div>
 
     </div>
 
     <div id="Back-End" class="tab-content">
-        <div style="width: 100vw; text-align: center"><h1 style="margin-top: 20px; font-size: 50px;line-height: 1; font-weight: normal; letter-spacing: -1px;">Scalable data.<br><span style="color: #777">At the speed of light.</span></h1></div>
+        <div class="header-container"><h1 class="category-header">Scalable data.<br><span>At the speed of light.</span></h1></div>
 
-        <p>Some text here.</p>
+        <div class="category-container">
+            <p>Some text here.</p>
+        </div>
+        <div class="category-container no-text">
+
+        </div>
     </div>
 
     <div id="Data-Scraping" class="tab-content">
-        <div style="width: 100vw; text-align: center"><h1 style="margin-top: 20px; font-size: 50px;line-height: 1; font-weight: normal; letter-spacing: -1px;">Access to data<br><span style="color: #777">From just about anywhere.</span></h1></div>
+        <div class="header-container"><h1 class="category-header">Data from anywhere.<br><span>Made accessible to everyone.</span></h1></div>
 
-        <p>leveraging phantom.js and regular expressions</p>
-        <div>yelp scraper code</div>
+        <div class="category-container">
+            <p>leveraging phantom.js and regular expressions</p>
+        </div>
+        <div class="category-container no-text">
+            <div>yelp scraper code</div>
+        </div>
+
     </div>
 
     <div id="Graphics-Programming" class="tab-content">
-        <div style="width: 100vw; text-align: center"><h1 style="margin-top: 20px; font-size: 50px;line-height: 1; font-weight: normal; letter-spacing: -1px;">Graphics guru and magician.<br><span style="color: #777">Design on the bleeding edge.</span></h1></div>
+        <div class="header-container"><h1 class="category-header">Graphics magic.<br><span>Design on the bleeding edge.</span></h1></div>
 
-        <p>Animation</p>
-        <div>Ship wobble</div>
+        <div class="category-container">
+            <p>Animation</p>
+        </div>
+        <div class="category-container no-text">
+            <div id="firework" style="width: 500px; height: 500px"></div>
+        </div>
 
-        <div>fire particles</div>
-        <p>shaders</p>
+        <div class="category-container no-text">
+            <div>fire particles</div>
+        </div>
+        <div class="category-container">
+            <p>shaders</p>
+        </div>
 
-        <p>some text</p>
-        <div>3d css box</div>
+        <div class="category-container">
+            <p>some text</p>
+        </div>
+        <div class="category-container no-text">
+            <div>3d css box</div>
+        </div>
     </div>
+
 </div>
 
 

@@ -385,7 +385,7 @@ function searchURLConstructor()
         urlHost += "?";
     }
 
-    console.log(urlHost+urlParameters);
+    // console.log(urlHost+urlParameters);
     return urlHost+urlParameters;
 }
 
@@ -979,7 +979,7 @@ function getAjax(url, success) {
 
 var resizeTimeout;
 var lastWindowWidth = document.body.clientWidth;
-console.log(lastWindowWidth);
+// console.log(lastWindowWidth);
 
 window.addEventListener("resize", function()
 {
