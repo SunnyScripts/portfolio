@@ -3,6 +3,10 @@
     font-family: 'Avenir Next';
     src: url("../fonts/AvenirNext-UltraLightItalic.ttf") format('truetype');
 }
+@font-face {
+    font-family: "Alegreya Sans SC";
+    src: url("../fonts/Alegreya_Sans_SC/AlegreyaSansSC-Regular.ttf");
+}
 .gradient
 {
     background: linear-gradient(140deg, cyan, violet); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
@@ -15,7 +19,7 @@
     text-shadow: -3px 3px 5px #000;
     z-index: -1;
     position: absolute;
-    left: 0;
+    margin: 0 auto; left: 0; right: 0;
     /*width: 100%;*/
     /*text-align: center;*/
 }
@@ -26,6 +30,7 @@
     width: 100vw;
     height: 10vh;
     background-color: white;
+    box-shadow: 0 0 18px #000;
 }
 .tab-group button
 {

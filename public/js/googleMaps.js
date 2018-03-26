@@ -49,13 +49,17 @@ function addMarkerToMap(businessObject)
         phoneNumberString = '<br><a href="tel:+1'+minPhoneNumber+'">'+businessObject.phoneNumber+ '</a>';
     }
 
+    var address = JSON.parse(businessObject.address);
+
     var infowindow = new google.maps.InfoWindow({
         content: '<!DOCTYPE html><html><head lang="en"> <meta charset="UTF-8"></head><body><h4>'+
-        businessObject.name+'</h4><p>'+businessObject.address.street+'<br>'+businessObject.address.city+
-        ', '+businessObject.address.state+phoneNumberString+'</p><button class="btn btn-warning" id="check-wifi" style="outline: none">check wifi</button><a target="_blank" href="http://google.com/maps/dir/' +
-        initialLocation.lat() + ',' + initialLocation.lng() + '/' + businessObject.address.fullAddress+
+        businessObject.name+'</h4><p>'+address.street+'<br>'+address.city+
+        ', '+address.state+phoneNumberString+'</p>' +
+        // '<button class="btn btn-warning" id="check-wifi" style="outline: none">check wifi</button>' +
+        '<a target="_blank" href="http://google.com/maps/dir/' +
+        initialLocation.lat() + ',' + initialLocation.lng() + '/' + address.fullAddress+
         '"><button class="btn btn-primary">get directions</button></a><a target="_blank" style="display: block; padding-top: 4px" href="http://yelp.com/biz/'+
-        businessObject._id+'">More info on Yelp</a>'
+        businessObject.id+'">More info on Yelp</a>'
     });
 
     var marker = new google.maps.Marker({
@@ -91,7 +95,7 @@ function addMarkerToMap(businessObject)
                     wifiButton.innerHTML = '<span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> checking';
 
                     var xhr = new XMLHttpRequest();
-                    xhr.open("GET", 'http://ryan-berg.com:10000/wifi_check?business_id='+businessObject._id, true);
+                    xhr.open("GET", 'http://ryan-berg.com:10000/wifi_check?businessid='+businessObject.id, true);
                     xhr.onload = function ()
                     {
                         if (xhr.readyState === 4)
@@ -127,11 +131,11 @@ function setAllMap(map)
     }
 }
 
-function callWifiAPI(latitude, longitude, map)
+function callWifiAPI(latitude, longitude)
 {
     setAllMap(null);
 
-    var wifiAPIString = 'http://ryan-berg.com:10000/search?latitude='+latitude+'&longitude='+longitude+'&radius=3';
+    var wifiAPIString = '/wifi/search?latitude='+latitude+'&longitude='+longitude+'&radius=3';
 
     //console.log(wifiAPIString);
 
@@ -216,7 +220,7 @@ function initialize()
             }
 
             var placesArray = autocomplete.getPlace();
-            console.log(placesArray);
+            // console.log(placesArray);
 
             processSearchBoxResults(placesArray);
         });
@@ -253,7 +257,7 @@ function processSearchBoxResults(placesArray)
     var latitude = placesArray.geometry.location.lat();
     var longitude = placesArray.geometry.location.lng();
 
-    console.log(latitude + ', ' + longitude);
+    // console.log(latitude + ', ' + longitude);
 
     map.panTo({lat:latitude, lng:longitude});
     callWifiAPI(latitude, longitude, map);

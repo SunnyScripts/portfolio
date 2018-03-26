@@ -29,58 +29,81 @@
         if(event.currentTarget.id === "starting-tab")
         {
             document.getElementById("Main-Content-Container").style.top = "100vh";
-            document.body.style.overflow = "hidden";
         }
         else
         {
-            document.getElementById("Main-Content-Container").style.top = "40vh";
-            document.body.style.overflow = "visible";
+            document.getElementById("Main-Content-Container").style.top = "20vh";
         }
     }
 </script>
-<body style="margin:0; background-color: white; color: #E3DFDC; overflow: hidden">
+<body style="margin:0; background-color: white; overflow: hidden; font-family: 'Montserrat', sans-serif">
 
 <div class="tab-group">
     <span id="starting-tab" class="tab" onclick="tabSwitch(event, 'Home')"><span class="gradient" style="cursor: pointer; font-size: 4em; margin-left: .1em; padding:0">RB</span></span>
-    <a href="wifi_search.html"><button>WiFi</button></a>
-    <a href="partsearch.html"><button>CAT</button></a>
     <button class="tab" onclick="tabSwitch(event, 'Graphics-Programming')">Graphics Programming</button>
     <button class="tab" onclick="tabSwitch(event, 'Data-Scraping')">Data Scraping</button>
-    <button class="tab" onclick="tabSwitch(event, 'Restful-API')">Back-End</button>
+    <button class="tab" onclick="tabSwitch(event, 'Back-End')">Back-End</button>
     <button class="tab" onclick="tabSwitch(event, 'Front-End')">Front-End</button>
 </div>
 
-<div id="Home" style="width: 100vw; height: 90vh; overflow: hidden; position: relative;">
-    <img src="images/snowLand.jpeg" id="back" width="100%" height="auto" style="z-index: -3; position: absolute">
+<div id="Home" style="width: 100vw; height: 90vh; position: absolute; top: 10vh;">
+    <img src="images/snowLand.jpg" id="back" width="100%" height="auto" style="z-index: -3; position: absolute">
     <div id="fireBox" style="position: absolute; width: 100%; height: 100%; top:0; z-index: -2"></div>
-    <span id="text" class="gradient" data-text="Ryan Berg" style=" position: absolute; font-size: 8em; top: calc(50% - .6em); left: 30vw;">Ryan Berg</span>
+    <div style="width: 100vw; text-align: center; position: absolute; z-index: -1; top: 50%; transform: translateY(-50%);"><span id="text" class="gradient" data-text="Ryan Berg" style=" font-size: 8em;">Ryan Berg</span></div>
 </div>
 
-<div id="Main-Content-Container" style="position: absolute; display: initial; top: 100vh; width: 100vw; min-height: 60vh; transition: 1000ms; background-color: snow">
-<div style="background-color: #5B7C89; height: 90vh" id="Data-Scraping" class="tab-content">
-    <h3>Data Scraping</h3>
-    <div style="width: 50%; float: left">Access data from anywhere.</div>
-    <div style="width: 50%; float: left"><img src="images/logos_place_holder.png"></div>
 
-    <div style="width: 50%; float: left">In a form you can easily use and manipulate.</div>
-    <div style="width: 50%; float: left"><img src="images/json.png"></div>
+
+<div id="Main-Content-Container" style="position: relative; top: 100vh; width: 100vw; height: 70vh; background-color: white; transition: 1s; overflow-y: scroll; box-shadow: 0 -0 18px #000;">
+
+    <div id="Front-End" class="tab-content">
+        <div style="width: 100vw; text-align: center"><h1 style="margin-top: 20px; font-size: 50px;line-height: 1; font-weight: normal; letter-spacing: -1px;">Clean and modular.<br><span style="color: #777">Faster and more efficient.</span></h1></div>
+
+        <p style="font-size: 21px;width: 600px; float: left">Find free Wifi near you or plan for your next trip. Rate places you've been and share with your friends.</p>
+        <a style="float: left;" target="_blank" href="https://itunes.apple.com/us/app/this-wifi-sucks/id925050107?mt=8">
+            <div style="position: relative; background: url('images/TWSAdvert.png') no-repeat center; background-size: auto 500px; height: 500px; width: 500px">
+                <video autoplay loop style=" position: absolute; top: 59px; left:143px; height: 382px">
+                    <source src="images/TWSAdvert.webm" type="video/webm">
+                    <source src="images/TWSAdvert.mp4" type="video/mp4">
+                </video>
+            </div>
+        </a>
+
+        <iframe frameborder="1" src="/wifi" style="  height: 500px; width: 500px; float: left"></iframe>
+        <p style="font-size: 21px;width: 600px; height: 500px; float: left">Find free Wifi near you or plan for your next trip. Rate places you've been and share with your friends.</p>
+
+        <p style="font-size: 21px;width: 600px; height: 500px; float: left;">Find free Wifi near you or plan for your next trip. Rate places you've been and share with your friends.</p>
+        <iframe frameborder="1" src="/cat" style="float: left; height: 500px; width: 500px; "></iframe>
+
+    </div>
+
+    <div id="Back-End" class="tab-content">
+        <div style="width: 100vw; text-align: center"><h1 style="margin-top: 20px; font-size: 50px;line-height: 1; font-weight: normal; letter-spacing: -1px;">Scalable data.<br><span style="color: #777">At the speed of light.</span></h1></div>
+
+        <p>Some text here.</p>
+    </div>
+
+    <div id="Data-Scraping" class="tab-content">
+        <div style="width: 100vw; text-align: center"><h1 style="margin-top: 20px; font-size: 50px;line-height: 1; font-weight: normal; letter-spacing: -1px;">Access to data<br><span style="color: #777">From just about anywhere.</span></h1></div>
+
+        <p>leveraging phantom.js and regular expressions</p>
+        <div>yelp scraper code</div>
+    </div>
+
+    <div id="Graphics-Programming" class="tab-content">
+        <div style="width: 100vw; text-align: center"><h1 style="margin-top: 20px; font-size: 50px;line-height: 1; font-weight: normal; letter-spacing: -1px;">Graphics guru and magician.<br><span style="color: #777">Design on the bleeding edge.</span></h1></div>
+
+        <p>Animation</p>
+        <div>Ship wobble</div>
+
+        <div>fire particles</div>
+        <p>shaders</p>
+
+        <p>some text</p>
+        <div>3d css box</div>
+    </div>
 </div>
 
-<div style="background-color: #44505E" id="Restful-API" class="tab-content">
-    <h3>Content</h3>
-    <p>Retrieve clean data at the speed of light.</p>
-</div>
-
-<div style="background-color: #AFB1B5" id="Front-End" class="tab-content">
-    <div style="width: 600px; margin: 25px; float: left"><span>Find free Wifi near you or plan for your next trip. Rate places you've been and share with your friends.</span></div>
-    <iframe width="600px" height="600px" frameborder="0" src="wifi_search.html" style="margin: 25px; float: left"></iframe>
-</div>
-
-<div style="background-color: #77808D" id="Graphics-Programming" class="tab-content">
-    <h3>Content</h3>
-    <p>Animation shaders and much more!</p>
-</div>
-</div>
 
 </body>
 <script type="application/javascript">

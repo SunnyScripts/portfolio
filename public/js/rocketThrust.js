@@ -97,7 +97,7 @@ function init() {
     {
         maxLifeBuffer[i] = getPseudoRandom(15, .5);
 
-        positionBuffer.push(getPseudoRandom(0, fireBox.clientWidth), -10, 0);
+        positionBuffer.push(getPseudoRandom(0, fireBox.clientWidth), -14, 0);
 
         startValue = getPseudoRandom(30, 5);
         //initial velocity, acceleration

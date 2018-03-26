@@ -351,7 +351,7 @@ document.getElementById("shopping-cart").addEventListener("input", function(even
 
 function searchURLConstructor()
 {
-    var urlHost = "http://104.199.118.238/parts/";
+    var urlHost = "/cat/";
     var urlParameters = "";
 
     if(currentSearchType && currentSearchValue)
@@ -655,8 +655,7 @@ function addChunk(index, at)
 
 function sourceImageError(element)
 {
-    if(element.src != 'http://ncparts.s3.amazonaws.com/cat_parts_generic.jpeg')
-        element.src='http://ncparts.s3.amazonaws.com/cat_parts_generic.jpeg';
+    element.src='images/defaultCAT.jpeg';
 }
 
 document.getElementById("search-results-container").addEventListener("click", function(event)

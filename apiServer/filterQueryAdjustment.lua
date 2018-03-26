@@ -41,3 +41,25 @@ function parseFilterParameters()
         ngx.var.filter_query = filterQueryString
     end
 end
+function boundaryCheck()
+    local radius;
+    if ngx.var.arg_radius then
+        radius = tonumber(ngx.var.arg_radius)
+
+        if radius > 0 and radius <= 10 then
+            radius = ngx.var.arg_radius
+        elseif radius > 10 then
+            radius = 10
+        end
+
+    else
+        radius = 1;
+    end
+
+--  miles to degrees
+    radius = radius * .01666666666;
+
+    ngx.var.boundary_query = " where ("..ngx.var.arg_latitude.."<"..ngx.var.arg_latitude+radius.." and "..ngx.var.arg_latitude..">"..ngx.var.arg_latitude-radius..
+            ") and ("..ngx.var.arg_longitude..">"..ngx.var.arg_longitude-radius.." and "..ngx.var.arg_longitude.."<"..ngx.var.arg_longitude+radius..")"
+
+end

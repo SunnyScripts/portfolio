@@ -4,9 +4,8 @@ WORKDIR /production_server
 ADD . /production_server
 WORKDIR apiServer
 
-# forward request and error logs to docker log collector
-#RUN ln -sf /dev/stdout /var/log/nginx/access.log \
-#	&& ln -sf /dev/stderr /var/log/nginx/error.log
+# forward error logs to docker log collector
+#RUN ln -sf /dev/stderr logs/error.log
 
 EXPOSE 80
 
