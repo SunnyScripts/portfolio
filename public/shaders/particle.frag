@@ -4,8 +4,11 @@ uniform sampler2D texture;
 
 varying float vMaxLife;
 varying float vTime;
-//varying vec2 vColor;
 
+varying vec2 vHue;
+varying vec2 vSaturation;
+varying vec2 vLightness;
+varying vec2 vOpacity;
 
 float easeInOutQuad(float point)
 {
@@ -57,9 +60,9 @@ void main()
 {
     float timePercent = vTime/vMaxLife;
 
-    gl_FragColor = vec4(1., 1., 1., abs((.7 * timePercent) -.7)) * texture2D( texture, gl_PointCoord );
+//    gl_FragColor = vec4(1., 1., 1., abs((.7 * timePercent) -.7)) * texture2D( texture, gl_PointCoord );
 
-//    gl_FragColor = vec4(hslToRgb(abs(((vColor.x-vColor.y) * timePercent) - vColor.x), 1., .5), 1. - timePercent) * texture2D( texture, gl_PointCoord );
+    gl_FragColor = vec4(hslToRgb(abs(((vHue.x-vHue.y) * timePercent) - vHue.x), vSaturation.x, easeInOutQuad(abs(((vLightness.x-vLightness.y) * timePercent) - vLightness.x))), easeInOutQuad(abs(((vOpacity.x-vOpacity.y) * timePercent) - vOpacity.x))) * texture2D(texture, gl_PointCoord);
 
 //    gl_FragColor = vec4(hslToRgb(50.*(1.-timePercent), 1., easeInOutQuad(1. - timePercent)), 1. - timePercent) * texture2D( texture, gl_PointCoord );
 }

@@ -12,11 +12,19 @@ attribute vec3 position;
 attribute float maxLife;
 
 attribute float size;
-attribute vec2 color;
 
 varying float vTime;
 varying float vMaxLife;
-//varying vec2 vColor;
+
+attribute vec2 hue;
+attribute vec2 saturation;
+attribute vec2 lightness;
+attribute vec2 opacity;
+
+varying vec2 vHue;
+varying vec2 vSaturation;
+varying vec2 vLightness;
+varying vec2 vOpacity;
 
 void main()
 {
@@ -45,5 +53,9 @@ void main()
 
 	vTime = tmpTime;
 	vMaxLife = maxLife;
-//	vColor = color;
+
+	vHue = hue;
+	vSaturation = saturation;
+	vLightness = lightness;
+	vOpacity = opacity;
 }

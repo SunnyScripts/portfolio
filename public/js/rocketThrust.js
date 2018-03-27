@@ -8,14 +8,28 @@ if(!Detector.webgl)
 
 const degreesToRadiansMultiplier = 0.0174532925;
 
-var cameraSnow, cameraFirework, sceneSnow;
-var sceneFirework, rendererSnow, rendererFirework;
+var uniforms, animator, backgroundTexture;
 
-var uniforms;
-
-
-var fireBox = document.getElementById('fireBox');
-var firework = document.getElementById('firework');
+var containers = {
+    "snow": {
+        "renderer": null,
+        "scene": null,
+        "camera": null,
+        "element": document.getElementById('snow')
+    },
+    "firework": {
+        "renderer": null,
+        "scene": null,
+        "camera": null,
+        "element": document.getElementById('firework')
+    },
+    "ship": {
+        "renderer": null,
+        "scene": null,
+        "camera": null,
+        "element": document.getElementById('ship')
+    }
+};
 
 var time =
     {
@@ -29,10 +43,6 @@ var time =
         }
     };
 time.getDelta();
-
-var text = document.getElementById("text");
-var back = document.getElementById("back");
-
 
 var shaders = {
     particleVS: null,
@@ -54,22 +64,33 @@ loader.load("shaders/particle.frag", function(data)
         init();
 });
 
-
-
-var sprite;
-
 function init()
 {
-    cameraSnow = new THREE.OrthographicCamera(0, fireBox.clientWidth, 0, fireBox.clientHeight, 1, 10);
-    cameraSnow.position.z = 2;
+    for(let container in containers)
+    {
+        let scene = new THREE.Scene();
 
-    cameraFirework = new THREE.OrthographicCamera(0, fireBox.clientWidth, 0, fireBox.clientHeight, 1, 10);
-    cameraFirework.position.z = 2;
+        let camera = new THREE.OrthographicCamera(0, containers[container].element.clientWidth, 0, containers[container].element.clientHeight, 1, 10);
+        camera.position.z = 2;
+        scene.add(camera);
 
-    sceneSnow = new THREE.Scene();
-    sceneFirework = new THREE.Scene();
-    sceneSnow.add(cameraSnow);
-    sceneFirework.add(cameraFirework);
+        let renderer;
+        if(container === "snow")
+            renderer = new THREE.WebGLRenderer({alpha: true, antialias: false});
+        else if(container === "firework")
+            renderer = new THREE.WebGLRenderer({alpha: false, antialias: false});
+        else
+            renderer = new THREE.WebGLRenderer({alpha: false, antialias: true});
+
+        renderer.setSize(containers[container].element.clientWidth, containers[container].element.clientHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+
+        containers[container].element.appendChild(renderer.domElement);
+
+        containers[container].camera = camera;
+        containers[container].scene = scene;
+        containers[container].renderer = renderer;
+    }
 
     var textureLoader = new THREE.TextureLoader();
     var particleTexture = textureLoader.load( 'images/particle.png' );
@@ -82,7 +103,7 @@ function init()
         {
             transparent: true,
             depthWrite: false,
-            blending: THREE.NormalBlending,
+            blending: THREE.AdditiveBlending,
             uniforms: uniforms,
             vertexShader: shaders.particleVS,
             fragmentShader: shaders.particleFS,
@@ -100,9 +121,19 @@ function init()
             "min":2,
             "range":2
         },
+        "color":{
+          "initialHue":0,
+          "endHue":0,
+          "initialSaturation":1,
+          "endSaturation":1,
+          "initialLightness":.99,
+          "endLightness":.99,
+          "initialOpacity":1,
+          "endOpacity":0
+        },
         "position":{
             "minV":new THREE.Vector3(0,-10,0),
-            "rangeV":new THREE.Vector3(fireBox.clientWidth, 0, 0)
+            "rangeV":new THREE.Vector3(containers.snow.element.clientWidth, 0, 0)
         },
         "speed":{
             "initialMin":25,
@@ -120,29 +151,37 @@ function init()
 
     //if particle system goes out of camera bounds, particles will still be drawn
     particleSystem.frustumCulled = false;
+    containers.snow.scene.add(particleSystem);
 
-    // var particleSystem2 = new THREE.Points(bufferGeometry, particleShaderMaterial);
-
-    sceneSnow.add(particleSystem);
-    sceneFirework.add(new THREE.Points(createBufferGeometry({
+    containers.firework.scene.add(new THREE.Points(createBufferGeometry({
         "particles": 1000,
         "lifetime":{
             "min":3,
-            "range":.5
+            "range":0
         },
         "size":{
-            "min":6,
-            "range":3
+            "min":8,
+            "range":5
+        },
+        "color":{
+            "initialHue":50,
+            "endHue":1,
+            "initialSaturation":1,
+            "endSaturation":1,
+            "initialLightness":.75,
+            "endLightness":.25,
+            "initialOpacity":1,
+            "endOpacity":1
         },
         "position":{
-            "minV":new THREE.Vector3(750,350,0),
+            "minV":new THREE.Vector3(firework.clientWidth*.5,firework.clientHeight*.5,0),
             "rangeV":new THREE.Vector3(0, 0, 0)
         },
         "speed":{
-            "initialMin":25,
-            "initialRange":5,
-            "endMin":30,
-            "endRange":4
+            "initialMin":90,
+            "initialRange":40,
+            "endMin":0,
+            "endRange":0
         },
         "angle":{
             "initialMin":0,
@@ -152,57 +191,63 @@ function init()
         }
     }), particleShaderMaterial));
 
-    // var texture = new THREE.TextureLoader().load("images/ship_wobble.png");
-    // texture.flipY = false;
-    // animator = new AnimateSpritesheet(texture, new THREE.Vector2(4096, 4096), 400, 500, 10, 48, true);
-    // animator.nextFrame(0);
+    var texture = new THREE.TextureLoader().load("images/ship_wobble.png");
+    texture.flipY = false;
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.repeat.x = - 1;
+    animator = new AnimateSpritesheet(texture, new THREE.Vector2(4096, 4096), 400, 500, 10, 48, true);
+    animator.nextFrame(0);
 
-    // var spriteMaterial = new THREE.SpriteMaterial( { map: texture});
-    // sprite = new THREE.Sprite(spriteMaterial);
-    // sprite.scale.set(300, 300, 1);
-    // sprite.position.copy(new THREE.Vector3(fireBox.clientWidth*.5+450, 300, 0));
-    // sprite.visible = false;
-    //
+    var spriteMaterial = new THREE.SpriteMaterial( { map: texture});
+    var sprite = new THREE.Sprite(spriteMaterial);
+    sprite.scale.set(300, 300, 1);
+    sprite.position.copy(new THREE.Vector3(250, 250, 1));
 
-    // sceneSnow.add(sprite);
-    //
+    backgroundTexture = new THREE.TextureLoader().load("images/darkBlueSpace512.jpg");
+    backgroundTexture.flipY = false;
+    backgroundTexture.wrapS = THREE.RepeatWrapping;
+    // backgroundTexture.offset.x += .35;
+    backgroundTexture.wrapT = THREE.RepeatWrapping;
 
+    backgroundTexture.repeat.set(2,2);
 
-    rendererSnow = new THREE.WebGLRenderer({alpha: true, antialias: false});
-    rendererSnow.setSize(fireBox.clientWidth, fireBox.clientHeight);
-    rendererSnow.setPixelRatio(window.devicePixelRatio);
-    fireBox.appendChild(document.createElement( 'div' ).appendChild(rendererSnow.domElement));
+    var backgroundSprite = new THREE.Sprite(new THREE.SpriteMaterial({map: backgroundTexture}));
+    backgroundSprite.scale.set(containers.ship.element.clientWidth, containers.ship.element.clientHeight, 1);
+    backgroundSprite.position.copy(new THREE.Vector3(containers.ship.element.clientWidth*.5, containers.ship.element.clientHeight*.5, 0));
 
-    rendererFirework = new THREE.WebGLRenderer({alpha: false, antialias: false});
-    rendererFirework.setSize(firework.clientWidth, firework.clientHeight);
-    rendererFirework.setPixelRatio(window.devicePixelRatio);
-    firework.appendChild(rendererFirework.domElement);
+    containers.ship.scene.add(backgroundSprite);
+    containers.ship.scene.add(sprite);
 
     mainLoop();
 }
-
 
 function mainLoop()
 {
     requestAnimationFrame(mainLoop);
     update(time.getDelta());
 
-    rendererSnow.render(sceneSnow, cameraSnow);
-    rendererFirework.render(sceneFirework, cameraFirework);
-
+    for(let container in containers)
+    {
+        containers[container].renderer.render(containers[container].scene, containers[container].camera);
+    }
 }
 
 var cumulativeTime = 4000;
+var counter = 0;
 
 function update(deltaTime)
 {
+    counter++;
     cumulativeTime += deltaTime*.001;
     uniforms.time.value = cumulativeTime;
 
+    backgroundTexture.offset.x -= .00001 * deltaTime;
 
-    // sprite.position.y += .1 * deltaTime * verticalMoveDirection;
-
-    // animator.nextFrame();
+    if(counter % 3 == 0)
+    {
+        animator.nextFrame();
+        counter = 0;
+    }
 }
 
 function createBufferGeometry(system)
@@ -211,8 +256,13 @@ function createBufferGeometry(system)
     var speedBuffer = [];
     var angleBuffer = [];
     var maxLifeBuffer = [];
-    //colorBuffer
     var particleSizeBuffer = [];
+
+    //theses color buffers exist to introduce randomness when needed
+    var hueBuffer = [];
+    var saturationBuffer =[];
+    var lightnessBuffer = [];
+    var opacityBuffer = [];
 
     for(let i = 0, startValue; i < system.particles; i++)
     {
@@ -226,19 +276,27 @@ function createBufferGeometry(system)
         startValue = getPseudoRandom(system.angle.initialMin, system.angle.initialRange);
         angleBuffer.push(startValue * degreesToRadiansMultiplier, getPseudoRandom(startValue-system.angle.endMinDelta, system.angle.endDeltaRange) * degreesToRadiansMultiplier);
 
-        // colorBuffer.push(230, 28);
+        hueBuffer.push(system.color.initialHue, system.color.endHue);
+        saturationBuffer.push(system.color.initialSaturation, system.color.endSaturation);
+        lightnessBuffer.push(system.color.initialLightness, system.color.endLightness);
+        opacityBuffer.push(system.color.initialOpacity, system.color.endOpacity);
 
         //size distribution
         particleSizeBuffer[i] = 7 * Math.pow(.7, Math.random() * 10) + getPseudoRandom(system.size.min, system.size.range);
     }
+
 
     var bufferGeometry =  new THREE.BufferGeometry();
     bufferGeometry.addAttribute("position", new THREE.Float32BufferAttribute(positionBuffer, 3));
     bufferGeometry.addAttribute("speed", new THREE.Float32BufferAttribute(speedBuffer, 2));
     bufferGeometry.addAttribute("angle", new THREE.Float32BufferAttribute(angleBuffer, 2));
     bufferGeometry.addAttribute("maxLife", new THREE.Float32BufferAttribute(maxLifeBuffer, 1));
-    // bufferGeometry.addAttribute("color", new THREE.Float32BufferAttribute(colorBuffer, 2));
     bufferGeometry.addAttribute("size", new THREE.Float32BufferAttribute(particleSizeBuffer, 1));
+
+    bufferGeometry.addAttribute("hue", new THREE.Float32BufferAttribute(hueBuffer, 2));
+    bufferGeometry.addAttribute("saturation", new THREE.Float32BufferAttribute(saturationBuffer, 2));
+    bufferGeometry.addAttribute("lightness", new THREE.Float32BufferAttribute(lightnessBuffer, 2));
+    bufferGeometry.addAttribute("opacity", new THREE.Float32BufferAttribute(opacityBuffer, 2));
 
     return bufferGeometry;
 }
