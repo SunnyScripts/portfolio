@@ -3,17 +3,10 @@
  * rberg2@hotmail.com
  */
 
-
-
-//TODO: show loader on gpsButton clicked
-
 var map;
 
-var initialLocation = new google.maps.LatLng(47.609351, -122.325263);//Seattle
-var browserSupportFlag =  false;
+var userMarker, userLocation = new google.maps.LatLng(47.609351, -122.325263);//Seattle
 
-var userMarker;
-var userMarkerIdentifier = 'User Location';
 var lastOpenInfoWindow;
 
 var isInfoWindowOpen = false;
@@ -57,8 +50,8 @@ function addMarkerToMap(businessObject)
         ', '+address.state+phoneNumberString+'</p>' +
         // '<button class="btn btn-warning" id="check-wifi" style="outline: none">check wifi</button>' +
         '<a target="_blank" href="http://google.com/maps/dir/' +
-        initialLocation.lat() + ',' + initialLocation.lng() + '/' + address.fullAddress+
-        '"><button class="btn btn-primary">get directions</button></a><a target="_blank" style="display: block; padding-top: 4px" href="http://yelp.com/biz/'+
+        userLocation.lat() + ',' + userLocation.lng() + '/' + address.fullAddress+
+        '"><button style="display: block; margin-bottom: 10px" class="btn btn-primary">get directions</button></a><a target="_blank" href="http://yelp.com/biz/'+
         businessObject.id+'">More info on Yelp</a>'
     });
 
@@ -135,7 +128,7 @@ function callWifiAPI(latitude, longitude)
 {
     setAllMap(null);
 
-    var wifiAPIString = '/wifi/search?latitude='+latitude+'&longitude='+longitude+'&radius=3';
+    var wifiAPIString = 'http://ryan-berg.com/wifi/search?latitude='+latitude+'&longitude='+longitude+'&radius=3';
 
     //console.log(wifiAPIString);
 
@@ -154,7 +147,7 @@ function callWifiAPI(latitude, longitude)
 function initialize()
 {
     var myOptions = {
-        zoom: 12,
+        zoom: 14.5,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         disableDefaultUI: true,
         zoomControl: true
@@ -166,7 +159,7 @@ function initialize()
     {
         if(pinningLocation)
         {
-            //initialLocation = event.latLng;
+            //userLocation = event.latLng;
             pinningLocation = false;
             map.setOptions({draggableCursor: 'url(https://maps.google.com/mapfiles/openhand.cur), move'});
             map.panTo(event.latLng);
@@ -245,11 +238,11 @@ function initMap(searchBox)
 
 function newLocation()
 {
-    map.setCenter(initialLocation);
+    map.setCenter(userLocation);
 
-    setUserMarker(initialLocation.lat(), initialLocation.lng());
+    setUserMarker(userLocation.lat(), userLocation.lng());
 
-    callWifiAPI(initialLocation.lat(), initialLocation.lng(), map);
+    callWifiAPI(userLocation.lat(), userLocation.lng(), map);
 }
 
 function processSearchBoxResults(placesArray)
@@ -273,7 +266,7 @@ function setUserMarker(lat, long)
         userMarker.setMap(null);
     }
     var infowindow = new google.maps.InfoWindow;
-    infowindow.setContent('<h4>'+userMarkerIdentifier+'</h4>');
+    infowindow.setContent('<h4>'+'User Location'+'</h4>');
 
     userMarker = new google.maps.Marker({
         position: new google.maps.LatLng(lat, long),
@@ -302,21 +295,18 @@ function geoLocate()
     // Try W3C Geolocation (Preferred)
     if(navigator.geolocation) {
 
-        browserSupportFlag = true;
         navigator.geolocation.getCurrentPosition(function(position)
         {
-            initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+            userLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
             newLocation(map);
 
         }, function()
         {
             document.getElementById("outer").style.visibility = 'hidden';
-            //handleNoGeolocation(browserSupportFlag);
         });
     }
     else //Browser doesn't support Geolocation
     {
-        browserSupportFlag = false;
         alert('Browser doesn\'t support Geolocation');
         //handleNoGeolocation(browserSupportFlag);
     }

@@ -337,11 +337,10 @@ document.getElementById("shopping-cart").addEventListener("input", function(even
 {
     if(event.target.hasAttribute("data-price") && event.target.value)
     {
-        console.log(event.target.value);
         if(event.target.value < 1)
             event.target.value = 1;
-        if(event.target.value > shoppingCart[event.target.getAttribute("data-cart-index")].part_info.quantity)
-            event.target.value = shoppingCart[event.target.getAttribute("data-cart-index")].part_info.quantity;
+        if(event.target.value > shoppingCart[event.target.getAttribute("data-cart-index")].part_info.total_quantity)
+            event.target.value = shoppingCart[event.target.getAttribute("data-cart-index")].part_info.total_quantity;
 
         document.getElementById(event.target.getAttribute("data-price-id")).innerHTML = "$" + (event.target.getAttribute("data-price") * event.target.value).toFixed(2);
         shoppingCart[event.target.getAttribute("data-cart-index")].purchase_quantity = event.target.value;
@@ -351,27 +350,27 @@ document.getElementById("shopping-cart").addEventListener("input", function(even
 
 function searchURLConstructor()
 {
-    var urlHost = "/cat/";
+    var urlHost = "http://ryan-berg.com/cat/search";
     var urlParameters = "";
 
     if(currentSearchType && currentSearchValue)
     {
-        urlHost += "search/";
+        // urlHost += "/search";
         urlParameters += "search_type="+currentSearchType+"&search_text="+currentSearchValue;
     }
     if(currentSearchCategoryType && currentSearchCategoryName)
     {
-        urlHost += "category/";
+        // urlHost += "/category";
         urlParameters += "&category_type="+currentSearchCategoryType+"&category_name="+currentSearchCategoryName;
     }
     if(!currentSearchValue && !currentSearchCategoryName)
     {
-        urlHost +="all/";
+        // urlHost +="/all";
     }
     if(currentFilters.length > 0)
     {
         // console.log(currentFilters);
-        urlHost += "filter/";
+        // urlHost += "/filter";
         urlParameters += "&filter_json="+JSON.stringify(currentFilters);
     }
     if(currentSortObject)
@@ -385,7 +384,7 @@ function searchURLConstructor()
         urlHost += "?";
     }
 
-    // console.log(urlHost+urlParameters);
+    console.log(urlHost+urlParameters);
     return urlHost+urlParameters;
 }
 
@@ -638,7 +637,7 @@ function addChunk(index, at)
             '</ul>'+
             '<div id="add-to-cart'+(index+i)+'" class="translate-transition" style="z-index: '+(Math.floor(500/(i+1)))+'; overflow: hidden; color: white; position: absolute; left: 9vw; top: 8vw; display: inline-block;  width: 10vw; background-color: #444444">'+
             '<div style="padding: 0 1vw; text-align: left">'+
-            '<div style="margin: .5vw 0"><span>'+searchResults[index+i].quantity+' in stock</span></div>'+
+            '<div style="margin: .5vw 0"><span>'+searchResults[index+i].total_quantity+' in stock</span></div>'+
             '<div style="margin: .5vw 0"><input id="quantity-stepper'+(index+i)+'" type="number" style="width: 100%; font-family: inherit; font-size: .85em" placeholder="Purchase Qty"></div>'+
             '<button data-cart-item-index="'+(index+i)+'" class="btn" style="margin-bottom: 1vw">Add to Cart</button>'+
             '</div>'+
@@ -809,7 +808,7 @@ function openShoppingCart()
                     '<div style="float:left; height:14vw; width:14vw; background-color: white; position: relative"><img style="max-width: 100%; max-height: 100%; position: absolute; top: 0; left: 0; bottom: 0; right: 0; margin: auto;" src="'+shoppingCart[i].part_info.image_source+'"></div>'+
                     '<div style="overflow: auto; padding-top: .75vw">'+
                     '<span style="float:left;margin-left: 1vw"><b style="font-size: 1.2vw">'+shoppingCart[i].part_info.name+'</b><br>'+nullConverter(shoppingCart[i].part_info.short_description, true)+'</span>'+
-                    '<span style="float: right">Qty.<input class="stepper" min="1" max="'+shoppingCart[i].part_info.quantity+'" value="'+shoppingCart[i].purchase_quantity+'" type="number" data-price-id="price'+i+'" data-cart-index="'+i+'" data-price="'+shoppingCart[i].part_info.price.replace("$", "")+'"/>&nbsp;&nbsp;<b id="price'+i+'">$'+(shoppingCart[i].part_info.price * shoppingCart[i].purchase_quantity).toFixed(2)+'</b></span>'+
+                    '<span style="float: right">Qty.<input class="stepper" min="1" max="'+shoppingCart[i].part_info.total_quantity+'" value="'+shoppingCart[i].purchase_quantity+'" type="number" data-price-id="price'+i+'" data-cart-index="'+i+'" data-price="'+shoppingCart[i].part_info.price.replace("$", "")+'"/>&nbsp;&nbsp;<b id="price'+i+'">$'+(shoppingCart[i].part_info.price * shoppingCart[i].purchase_quantity).toFixed(2)+'</b></span>'+
                     '<div style="float: right; clear: right; margin-top: 4px">'+
                     '<span>'+shoppingCart[i].part_info.part_number+'</span>'+
                     '<span onclick="removeCartItem('+i+')" style="color: blue; margin-left: 8px; cursor: pointer">Remove</span>'+
@@ -887,11 +886,11 @@ function addToCart(itemIndex)
         //     return cartItem.part_info.part_number == searchResults[itemIndex].part_number;
         // });
 
-        if(cartIndex != -1 && shoppingCart[cartIndex].purchase_quantity + +document.getElementById("quantity-stepper"+itemIndex).value <= shoppingCart[cartIndex].part_info.quantity)
+        if(cartIndex != -1 && shoppingCart[cartIndex].purchase_quantity + +document.getElementById("quantity-stepper"+itemIndex).value <= shoppingCart[cartIndex].part_info.total_quantity)
         {
             shoppingCart[cartIndex].purchase_quantity += +document.getElementById("quantity-stepper"+itemIndex).value;
         }
-        else if(cartIndex == -1 && +document.getElementById("quantity-stepper"+itemIndex).value <= searchResults[itemIndex].quantity)
+        else if(cartIndex == -1 && +document.getElementById("quantity-stepper"+itemIndex).value <= searchResults[itemIndex].total_quantity)
         {
             var cartObject = {
                 "part_info": searchResults[itemIndex],

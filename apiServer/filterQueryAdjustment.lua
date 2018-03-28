@@ -9,16 +9,34 @@
 --local cjson2 = cjson.new()
 local cjson_safe = require "cjson.safe"
 
-function parseSort()
+function querySelector()
     local pageOffset = 0
     if ngx.var.arg_page then
         pageOffset = ngx.var.arg_page
     end
 
+    pageOffset = " limit 80 offset " .. (80*(pageOffset-1))
+
+    local orderBy = ""
     if ngx.var.arg_sort_type and ngx.var.arg_sort_value then
-        ngx.var.sort_query = " order by " .. ngx.var.arg_sort_type .. " " .. ngx.var.arg_sort_value .. " limit 80 offset " .. (80*(pageOffset-1))
+        orderBy = " order by " .. ngx.var.arg_sort_type .. " " .. ngx.var.arg_sort_value .. pageOffset
+    end
+
+    if ngx.var.arg_filter_json and ngx.var.arg_category_type and ngx.var.arg_category_name and ngx.var.arg_search_type and ngx.var.arg_search_text then
+        ngx.var.sort_query = "select * from (SELECT * FROM (select * from parts where ".. ngx.var.arg_category_type .." = '".. ngx.var.arg_category_name .."') as filters ".. parseFilterParameters() .. " as alias where ".. ngx.var.arg_search_type .." ilike '%".. ngx.var.arg_search_text .."'"..orderBy
+    elseif ngx.var.arg_filter_json and ngx.var.arg_category_type and ngx.var.arg_category_name then
+        ngx.var.sort_query = "SELECT * FROM (select * from cat where ".. ngx.var.arg_category_type .." = '".. ngx.var.arg_category_name .."') as filters ".. parseFilterParameters() .. orderBy
+    elseif ngx.var.arg_category_type and ngx.var.arg_category_name and ngx.var.arg_search_type and ngx.var.arg_search_text then
+        ngx.var.sort_query = "select * from (select * from cat where ".. ngx.var.arg_category_type .." = '".. ngx.var.arg_category_name .."') as alias where ".. ngx.var.arg_search_type .." ilike '%".. ngx.var.arg_search_text .."%'" .. orderBy
+    elseif ngx.var.arg_search_type and ngx.var.arg_search_text then
+        ngx.var.sort_query = "SELECT * from cat where ".. ngx.var.arg_search_type .." ilike '%".. var.arg_search_text .."%'".. orderBy
+    elseif ngx.var.arg_category_type and ngx.var.arg_category_name then
+        ngx.var.sort_query = "SELECT * from cat where ".. ngx.var.arg_category_type .." = '".. ngx.var.arg_category_name .. "'" .. orderBy
+    else
+        ngx.var.sort_query = "SELECT * from cat" .. orderBy
     end
 end
+
 function parseFilterParameters()
 --    ngx.say(ngx.var.arg_filter_json)
     local filterJSON = cjson_safe.decode(ngx.var.arg_filter_json)
@@ -38,7 +56,7 @@ function parseFilterParameters()
             filterQueryString = (filterQueryString .. "specifications ->> '".. filterJSON[i].filter_name .."' = '".. filterJSON[i].filter_value .."'")
         end
 
-        ngx.var.filter_query = filterQueryString
+        return filterQueryString
     end
 end
 function boundaryCheck()

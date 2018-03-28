@@ -28,6 +28,12 @@ var containers = {
         "scene": null,
         "camera": null,
         "element": document.getElementById('ship')
+    },
+    "scrollBackground": {
+        "renderer": null,
+        "scene": null,
+        "camera": null,
+        "element": document.getElementById('scroll-background')
     }
 };
 
@@ -70,17 +76,15 @@ function init()
     {
         let scene = new THREE.Scene();
 
-        let camera = new THREE.OrthographicCamera(0, containers[container].element.clientWidth, 0, containers[container].element.clientHeight, 1, 10);
-        camera.position.z = 2;
+        let camera = new THREE.OrthographicCamera(0, containers[container].element.clientWidth, 0, containers[container].element.clientHeight, 1, 11);
+        camera.position.z = 10;
         scene.add(camera);
 
         let renderer;
-        if(container === "snow")
-            renderer = new THREE.WebGLRenderer({alpha: true, antialias: false});
-        else if(container === "firework")
+        if(container === "firework")
             renderer = new THREE.WebGLRenderer({alpha: false, antialias: false});
         else
-            renderer = new THREE.WebGLRenderer({alpha: false, antialias: true});
+            renderer = new THREE.WebGLRenderer({alpha: true, antialias: false});
 
         renderer.setSize(containers[container].element.clientWidth, containers[container].element.clientHeight);
         renderer.setPixelRatio(window.devicePixelRatio);
@@ -107,7 +111,6 @@ function init()
             uniforms: uniforms,
             vertexShader: shaders.particleVS,
             fragmentShader: shaders.particleFS,
-            // vertexColors: true
         }
     );
 
@@ -174,7 +177,7 @@ function init()
             "endOpacity":1
         },
         "position":{
-            "minV":new THREE.Vector3(firework.clientWidth*.5,firework.clientHeight*.5,0),
+            "minV":new THREE.Vector3(containers.firework.element.clientWidth*.5,containers.firework.element.clientHeight*.5,0),
             "rangeV":new THREE.Vector3(0, 0, 0)
         },
         "speed":{
@@ -191,6 +194,44 @@ function init()
         }
     }), particleShaderMaterial));
 
+    containers.ship.scene.add(new THREE.Points(createBufferGeometry({
+        "particles": 500,
+        "lifetime":{
+            "min":.15,
+            "range":.1
+        },
+        "size":{
+            "min":45,
+            "range":0
+        },
+        "color":{
+            "initialHue":193,
+            "endHue":240,
+            "initialSaturation":1,
+            "endSaturation":1,
+            "initialLightness":.65,
+            "endLightness":.25,
+            "initialOpacity":1,
+            "endOpacity":0
+        },
+        "position":{
+            "minV":new THREE.Vector3(containers.ship.element.clientWidth*.5+145,containers.ship.element.clientHeight*.5,1),
+            "rangeV":new THREE.Vector3(0, 0, 0)
+        },
+        "speed":{
+            "initialMin":40,
+            "initialRange":1,
+            "endMin":40,
+            "endRange":1
+        },
+        "angle":{
+            "initialMin":-10,
+            "initialRange":20,
+            "endMinDelta":0,
+            "endDeltaRange":0
+        }
+    }), particleShaderMaterial));
+
     var texture = new THREE.TextureLoader().load("images/ship_wobble.png");
     texture.flipY = false;
     texture.wrapS = THREE.RepeatWrapping;
@@ -201,21 +242,21 @@ function init()
     var spriteMaterial = new THREE.SpriteMaterial( { map: texture});
     var sprite = new THREE.Sprite(spriteMaterial);
     sprite.scale.set(300, 300, 1);
-    sprite.position.copy(new THREE.Vector3(250, 250, 1));
+    sprite.position.copy(new THREE.Vector3(containers.ship.element.clientWidth*.5, containers.ship.element.clientHeight*.5, 2));
 
-    backgroundTexture = new THREE.TextureLoader().load("images/darkBlueSpace512.jpg");
+    backgroundTexture = new THREE.TextureLoader().load("images/space2048.jpg");
     backgroundTexture.flipY = false;
     backgroundTexture.wrapS = THREE.RepeatWrapping;
-    // backgroundTexture.offset.x += .35;
     backgroundTexture.wrapT = THREE.RepeatWrapping;
+    backgroundTexture.offset.y -= .35;
 
-    backgroundTexture.repeat.set(2,2);
+    backgroundTexture.repeat.set(containers.scrollBackground.element.clientWidth/768,containers.scrollBackground.element.clientHeight/768);
 
     var backgroundSprite = new THREE.Sprite(new THREE.SpriteMaterial({map: backgroundTexture}));
-    backgroundSprite.scale.set(containers.ship.element.clientWidth, containers.ship.element.clientHeight, 1);
-    backgroundSprite.position.copy(new THREE.Vector3(containers.ship.element.clientWidth*.5, containers.ship.element.clientHeight*.5, 0));
+    backgroundSprite.scale.set(containers.scrollBackground.element.clientWidth, containers.scrollBackground.element.clientHeight, 1);
+    backgroundSprite.position.copy(new THREE.Vector3(containers.scrollBackground.element.clientWidth*.5, containers.scrollBackground.element.clientHeight*.5, -1));
+    containers.scrollBackground.scene.add(backgroundSprite);
 
-    containers.ship.scene.add(backgroundSprite);
     containers.ship.scene.add(sprite);
 
     mainLoop();
@@ -241,7 +282,7 @@ function update(deltaTime)
     cumulativeTime += deltaTime*.001;
     uniforms.time.value = cumulativeTime;
 
-    backgroundTexture.offset.x -= .00001 * deltaTime;
+    backgroundTexture.offset.x -= .000005 * deltaTime;
 
     if(counter % 3 == 0)
     {

@@ -10,25 +10,6 @@
     <link rel="stylesheet" type="text/css" href="css/wifi_search.css">
     <link rel="stylesheet" href="css/bootstrap.min.css"/>
 
-    <style>
-        @import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css");
-
-        .glyphicon-refresh-animate {
-            animation: spin .7s infinite linear;
-            -webkit-animation: spin2 .7s infinite linear;
-        }
-
-        @-webkit-keyframes spin2 {
-            from { -webkit-transform: rotate(0deg);}
-            to { -webkit-transform: rotate(360deg);}
-        }
-
-        @keyframes spin {
-            from { transform: scale(1) rotate(0deg);}
-            to { transform: scale(1) rotate(360deg);}
-        }
-    </style>
-
     <script src="js/jquery-1.11.3.min.js"></script>
 
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyA5NWQoICqCw7zbPJ2uXRiD0n3C0sQVaGQ"></script>
@@ -51,7 +32,7 @@
             </div>
         </div>
     </div>
-    <input id="pac-input" class="controls" type="text" placeholder="Search Free WiFi (US Only)" style="visibility: hidden">
+    <input id="pac-input" class="controls" type="text" placeholder="Search Free WiFi (Seattle, San Francisco)" style="visibility: hidden">
     <!--TODO copy zoom buttons style-->
     <button id="gpsButton" class="btn btn-default" style="position: absolute;bottom:5vh; left: 2vw; z-index: 20;
 visibility: hidden; height: 36px; width: 36px; background: url('images/gpsIcon.png') no-repeat snow;
